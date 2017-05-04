@@ -15,10 +15,11 @@
 					.loop();
 
 				this.tl2 = new enchant.Timeline(this);
-				this.tl2.setTimeBased();
-				this.tl2.delay(10000)
-					.then(function(){
-						this.explode();
-					});
+				this.tl2.delay(90)
+				.moveY(game.height, 30);
+
+			}, 
+			onintersect: function(){
+				this.explode();
 			}
 		});

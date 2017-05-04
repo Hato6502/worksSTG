@@ -3,7 +3,9 @@ var PlayScene = enchant.Class.create(enchant.Scene, {
 		enchant.Scene.call(this);
 		this.backgroundColor = 'black';
 		this.addChild(this.player = new Player(this));
-		this.addChild(new SampleEnemy(100, 100, this));
+	}, 
+	onenterframe: function(){
+		if (this.age % 10 == 0) this.addChild(new SampleEnemy(Math.random()*game.width, Math.random()*game.height, this));
 	}, 
 	ontouchmove: function(e){
 		var event = new enchant.Event('move');

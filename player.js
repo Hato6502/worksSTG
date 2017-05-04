@@ -6,13 +6,14 @@
 						this.y = this.goal_y =  game.height/1.25;
 						this.dx = this.dy = 0.0;
 
-						this.tl.setTimeBased();
 						this.tl.then(function(){
 							var speed = 10.0;
-							var angle = Math.atan2(this.goal_y - this.y, this.goal_x - this.x);
-							this.moveBy(Math.cos(angle)*speed, Math.sin(angle)*speed);
+							if ((Math.pow(this.goal_x - this.x, 2.0) + Math.pow(this.goal_y - this.y, 2.0)) >= speed){
+								var angle = Math.atan2(this.goal_y - this.y, this.goal_x - this.x);
+								this.moveBy(Math.cos(angle)*speed, Math.sin(angle)*speed);
+							}
 						})
-						.delay(10)
+						.delay(1)
 						.loop();
 
 						this.tl2 = new enchant.Timeline(this);
