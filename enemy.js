@@ -1,15 +1,20 @@
 var Enemy = enchant.Class.create(enchant.Sprite, {
-	initialize: function(width, height, scene){
+	initialize: function(name, x, y, width, height, image, scene){
 		enchant.Sprite.call(this, width, height);
 		this.scene = scene;
+		this.name = name;
+		this.x = x - width/2;
+		this.y = y - height/2;
+		this.image = game.assets[image];
 
 		new enchant.Timeline(this).then(function(){
 			if (this.scene != null){
 				for(var i = 0;i < this.scene.childNodes.length;i++){
 					var node = this.scene.childNodes[i];
 					if (node != this) if (this.intersect(node)){
-						var e = new enchant.Event('intersect');
+						var e = new enchant.Event('intersect' + node.name);
 						this.dispatchEvent(e);
+						e = new enchant.Event('intersect' + this.name);
 						node.dispatchEvent(e);
 						return ;
 					}
