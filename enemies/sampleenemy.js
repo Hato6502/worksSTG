@@ -13,7 +13,8 @@ var SampleEnemy = enchant.Class.create(Enemy, {
 
 		this.tl2 = new enchant.Timeline(this);
 		this.tl2.delay(90)
-		.moveY(game.height, 30);
+		.moveY(game.height, 30)
+		.removeFromScene();
 
 	}, 
 	onintersectShot: function(){
