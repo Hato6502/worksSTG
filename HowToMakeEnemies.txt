@@ -25,7 +25,7 @@ var SampleEnemy = enchant.Class.create(Enemy, {
 var (敵のクラス名) = enchant.Class.create(Enemy, {
 	(イベント名): function((引数)){
 		(実行する内容)
-	}, 
+	}, …
 });
 
 イベント一例
