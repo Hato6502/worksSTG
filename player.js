@@ -29,5 +29,9 @@
 
 					onintersectEnemy: function(){
 						this.explode();
+					}, 
+
+					onintersectEnemyShot: function(){
+						this.explode();
 					}
 				});

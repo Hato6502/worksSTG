@@ -1,0 +1,100 @@
+敵の作り方
+
+(1) 最低限のクラスを用意する。
+
+テンプレート
+var (敵のクラス名) = enchant.Class.create(Enemy, {
+	initialize: function(x, y, scene){
+		Enemy.call(this, 'Enemy', x, y, (幅), (高さ), '(素材画像のパス)', scene);
+	}, 
+});
+
+定義例
+var SampleEnemy = enchant.Class.create(Enemy, {
+	initialize: function(x, y, scene){
+		Enemy.call(this, 'Enemy', x, y, 48, 48, 'images/monster/monster3.gif', scene);
+	}, 
+});
+
+(2) 使用するイベントを列挙する。
+    前ソースコード内のinitializeは「初期化イベント」を指している。
+    敵の定義は、イベントとその実行関数の組によって構成されている。
+    ※厳密には、クラスは関数の列挙によって構成される。
+      下記ソースコードでの「イベント名」は、厳密には「イベントに対応する実行関数名」である。
+
+var (敵のクラス名) = enchant.Class.create(Enemy, {
+	(イベント名): function((引数)){
+		(実行する内容)
+	}, 
+});
+
+イベント一例
+・initialize (引数: x, y, scene): 敵のオブジェクト生成時に発生する、初期化イベント。
+・onintersect* (引数: e): 他のオブジェクトと衝突した時に発生する。
+                          (例) onintersectPlayer: 自機との衝突
+                               onintersectEnemy: 敵との衝突
+                               onintersectShot: 自機の弾との衝突
+                               onintersectEnemyShot: 敵の弾との衝突
+
+イベントの列挙例
+var SampleEnemy = enchant.Class.create(Enemy, {
+	initialize: function(x, y, scene){
+		Enemy.call(this, 'Enemy', x, y, 48, 48, 'images/monster/monster3.gif', scene);
+	}, 
+	onintersectPlayer: function(e){
+	}, 
+	onintersectShot: function(e){
+	}, 
+});
+
+(3) 各イベントごとにプログラム実装
+機能の一例
+・this.shot(angle): 弾を撃つ。(引数 angle: 弧度法で指定する撃つ方向)
+・this.explode(): 爆発する。
+・this.frame = *: 表示する画像を指定する。
+                  (例) this.frame = 1: 1番目の画像を表示。
+・this.tl*: タイムライン機能
+
+タイムライン
+タイムライン機能を用いることで、敵のアニメーションを簡単に定義できる。
+例えば、画像アニメーションや、動き方のアニメーションである。
+タイムライン機能の使い方は、下記サイトを参考にしてください。
+
+http://wise9.jp/archives/7418
+http://blog.livedoor.jp/kamikaze_cyclone/archives/34684588.html
+http://hato.mydns.jp/enchant/timeline/
+
+敵の実装例
+var SampleEnemy = enchant.Class.create(Enemy, {
+	initialize: function(x, y, scene){
+		Enemy.call(this, 'Enemy', x, y, 48, 48, 'images/monster/monster3.gif', scene);
+
+		this.tl.setTimeBased();
+		this.tl.then(function(){this.frame = 2;})	// 画像アニメーション
+			.delay(64)
+			.then(function(){this.frame = 3;})
+			.delay(64)
+			.then(function(){this.frame = 4;})
+			.delay(64)
+			.loop();
+
+		this.tl2 = new enchant.Timeline(this);	// 動作アニメーション1: 一定時間静止後、下方向に移動する。
+		this.tl2.delay(90)
+			.moveY(game.height, 30)
+			.removeFromScene();
+
+		this.tl3 = new enchant.Timeline(this);	// 動作アニメーション2: 1秒おきに弾を撃つ。
+		this.tl3.setTimeBased();
+		this.tl3.then(function(){
+				this.shot(Math.random()*2.0*Math.PI);
+			}).delay(1000)
+			.loop();
+
+	}, 
+	onintersectShot: function(){
+		this.explode();
+	}, 
+	onintersectPlayer: function(){
+		this.explode();
+	}. 
+});

@@ -3,6 +3,8 @@ var Enemy = enchant.Class.create(enchant.Sprite, {
 		enchant.Sprite.call(this, width, height);
 		this.scene = scene;
 		this.name = name;
+		this.width = width;
+		this.height = height;
 		this.x = x - width/2;
 		this.y = y - height/2;
 		this.image = game.assets[image];
@@ -26,6 +28,11 @@ var Enemy = enchant.Class.create(enchant.Sprite, {
 	}, 
 	explode: function(){
 		this.scene.addChild(new Explosion(this.x + this.width/2, this.y + this.height/2, (this.width + this.height)/2));
-		this.scene.removeChild(this);
+		this.remove();
+	}, 
+	shot: function(angle){
+		var parentNode = this.parentNode;
+
+		if (parentNode != null) parentNode.addChild(new EnemyShot(this.x + this.width/2, this.y + this.height/2, angle, this.scene));
 	}
 });
