@@ -30,9 +30,9 @@ var Enemy = enchant.Class.create(enchant.Sprite, {
 		this.scene.addChild(new Explosion(this.x + this.width/2, this.y + this.height/2, (this.width + this.height)/2));
 		this.remove();
 	}, 
-	shot: function(angle){
+	shot: function(deg){
 		var parentNode = this.parentNode;
 
-		if (parentNode != null) parentNode.addChild(new EnemyShot(this.x + this.width/2, this.y + this.height/2, angle, this.scene));
+		if (parentNode != null) parentNode.addChild(new EnemyShot(this.x + this.width/2, this.y + this.height/2, deg/180.0*Math.PI, this.scene));
 	}
 });

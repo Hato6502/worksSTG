@@ -19,7 +19,7 @@ var SampleEnemy = enchant.Class.create(Enemy, {
 		this.tl3 = new enchant.Timeline(this);
 		this.tl3.setTimeBased();
 		this.tl3.then(function(){
-				this.shot(Math.random()*2.0*Math.PI);
+				this.shot(Math.random()*360.0);
 			}).delay(1000)
 			.loop();
 
